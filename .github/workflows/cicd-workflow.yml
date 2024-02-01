@@ -1,6 +1,6 @@
 # This workflow uses ServiceNow custom actions that are certified by ServiceNow.
 
-name: CICD GitHub workflow
+name: CICD GitHub workflow - OAuth authentication
 on: workflow_dispatch
   # push:
   #   branches: [ "main" ]
@@ -188,7 +188,7 @@ jobs:
     name: 'ServiceNow DevOps Change'
     steps:
       - name: ServiceNow Change
-        uses: ServiceNow/servicenow-devops-change@v3.1.0
+        uses: ServiceNow/servicenow-devops-change@dev
         with:
           # Devops Integration Token
           devops-integration-token: ${{ secrets.SN_DEVOPS_TOKEN }}
