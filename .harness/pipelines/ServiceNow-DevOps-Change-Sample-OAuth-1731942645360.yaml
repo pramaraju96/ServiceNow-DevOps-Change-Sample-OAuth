@@ -1,0 +1,35 @@
+pipeline:
+  identifier: Build_pramaraju96_ServiceNow_DevOps_Change_Sample_OAuth_1731942662316
+  name: Build ServiceNow-DevOps-Change-Sample-OAuth
+  orgIdentifier: _RR_HarnessCIOrganization1
+  projectIdentifier: _RR_CIProject1
+  properties:
+    ci:
+      codebase:
+        build: <+input>
+        connectorRef: account.Github_OAuth_1731942607387
+        repoName: pramaraju96/ServiceNow-DevOps-Change-Sample-OAuth
+  stages:
+    - stage:
+        identifier: build
+        name: build
+        spec:
+          caching:
+            enabled: true
+          cloneCodebase: true
+          execution:
+            steps:
+              - step:
+                  identifier: echo
+                  name: echo
+                  spec:
+                    command: echo hello world
+                  timeout: ""
+                  type: Run
+          platform:
+            arch: Amd64
+            os: Linux
+          runtime:
+            spec: {}
+            type: Cloud
+        type: CI
