@@ -27,9 +27,217 @@ pipeline:
                   timeout: ""
                   type: Run
           platform:
-            arch: Amd64
             os: Linux
+            arch: Amd64
           runtime:
-            spec: {}
             type: Cloud
+            spec: {}
         type: CI
+        description: ""
+    - stage:
+        name: Test
+        identifier: Test
+        description: ""
+        type: Custom
+        spec:
+          execution:
+            steps:
+              - step:
+                  type: ShellScript
+                  name: Step_Test
+                  identifier: Step_Test
+                  spec:
+                    shell: PowerShell
+                    executionTarget: {}
+                    source:
+                      type: Inline
+                      spec:
+                        script: |-
+                          mvn test -Dmaven.test.failure.ignore=true -DfailIfNoTests=false
+                          mvn package -DskipTests
+                    environmentVariables: []
+                    outputVariables: []
+                  timeout: 10m
+        tags: {}
+    - parallel:
+        - stage:
+            name: Sonar Scans
+            identifier: Sonar_Scans
+            description: ""
+            type: Custom
+            spec:
+              execution:
+                steps:
+                  - step:
+                      type: Container
+                      name: Step_Sonar Scans
+                      identifier: Step_Sonar_Scans
+                      spec:
+                        connectorRef: account.harnessImage
+                        image: servicenowdocker/sndevops:5.0.0
+                        command: "sndevopscli create sonar -url 'https://sonarcloud.io' -projectKey 'awasthi1210_servicenow-devops-change'  "
+                        shell: Sh
+                        infrastructure:
+                          type: KubernetesDirect
+                          spec:
+                            connectorRef: account.harness_kube_connector_arnab
+                            namespace: harness-delegate-ng
+                            resources:
+                              limits:
+                                cpu: "0.5"
+                                memory: 500Mi
+                            annotations: {}
+                            labels: {}
+                            containerSecurityContext:
+                              capabilities:
+                                drop: []
+                                add: []
+                            nodeSelector: {}
+                        reports:
+                          type: JUnit
+                          spec:
+                            paths: []
+                        outputVariables: []
+                        envVariables: {}
+                      timeout: 5m
+                rollbackSteps: []
+              serviceDependencies: []
+            tags: {}
+        - stage:
+            name: Veracode Scans
+            identifier: Veracode_Scans
+            description: ""
+            type: Custom
+            spec:
+              execution:
+                steps:
+                  - step:
+                      type: ShellScript
+                      name: ShellScript_1
+                      identifier: ShellScript_1
+                      spec:
+                        shell: Bash
+                        executionTarget: {}
+                        source:
+                          type: Inline
+                          spec:
+                            script: echo "In Veracode stage"
+                        environmentVariables: []
+                        outputVariables: []
+                      timeout: 10m
+            tags: {}
+        - stage:
+            name: Checkmarx SAST Scans
+            identifier: Checkmarx_SAST_Scans
+            description: ""
+            type: Custom
+            spec:
+              execution:
+                steps:
+                  - step:
+                      type: ShellScript
+                      name: ShellScript_1
+                      identifier: ShellScript_1
+                      spec:
+                        shell: Bash
+                        executionTarget: {}
+                        source:
+                          type: Inline
+                          spec:
+                            script: echo "In CxSAST stage"
+                        environmentVariables: []
+                        outputVariables: []
+                      timeout: 10m
+            tags: {}
+        - stage:
+            name: Checkmarx One Scans
+            identifier: Checkmarx_One_Scans
+            description: ""
+            type: Custom
+            spec:
+              execution:
+                steps:
+                  - step:
+                      type: ShellScript
+                      name: ShellScript_1
+                      identifier: ShellScript_1
+                      spec:
+                        shell: Bash
+                        executionTarget: {}
+                        source:
+                          type: Inline
+                          spec:
+                            script: echo "In CxOne stage"
+                        environmentVariables: []
+                        outputVariables: []
+                      timeout: 10m
+            tags: {}
+    - stage:
+        name: Artifact
+        identifier: Artifact
+        description: ""
+        type: Custom
+        spec:
+          execution:
+            steps:
+              - step:
+                  type: ShellScript
+                  name: ShellScript_1
+                  identifier: ShellScript_1
+                  spec:
+                    shell: Bash
+                    executionTarget: {}
+                    source:
+                      type: Inline
+                      spec:
+                        script: echo "In Artifact stage"
+                    environmentVariables: []
+                    outputVariables: []
+                  timeout: 10m
+        tags: {}
+    - stage:
+        name: Package
+        identifier: Package
+        description: ""
+        type: Custom
+        spec:
+          execution:
+            steps:
+              - step:
+                  type: ShellScript
+                  name: ShellScript_1
+                  identifier: ShellScript_1
+                  spec:
+                    shell: Bash
+                    executionTarget: {}
+                    source:
+                      type: Inline
+                      spec:
+                        script: echo "In Package stage"
+                    environmentVariables: []
+                    outputVariables: []
+                  timeout: 10m
+        tags: {}
+    - stage:
+        name: ServiceNow DevOps Change
+        identifier: ServiceNow_DevOps_Change
+        description: ""
+        type: Custom
+        spec:
+          execution:
+            steps:
+              - step:
+                  type: ShellScript
+                  name: ShellScript_1
+                  identifier: ShellScript_1
+                  spec:
+                    shell: Bash
+                    executionTarget: {}
+                    source:
+                      type: Inline
+                      spec:
+                        script: echo "In Change stage"
+                    environmentVariables: []
+                    outputVariables: []
+                  timeout: 10m
+        tags: {}
