@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_pramaraju96_ServiceNow_DevOps_Change_Sample_OAuth_1731942662316-push-trigger-input-set
+  identifier: Build_pramaraju96_ServiceNow_DevOps_Change_Sample_OAuth_1731942662316pushtriggerinputset
+  orgIdentifier: _RR_HarnessCIOrganization1
+  projectIdentifier: _RR_CIProject1
+  pipeline:
+    identifier: Build_pramaraju96_ServiceNow_DevOps_Change_Sample_OAuth_1731942662316
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: <+trigger.branch>
