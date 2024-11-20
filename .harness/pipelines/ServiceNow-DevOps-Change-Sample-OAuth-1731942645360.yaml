@@ -61,7 +61,7 @@ pipeline:
         tags: {}
     - parallel:
         - stage:
-            name: Sonar Scans
+            name: ServiceNow DevOps Sonar Scan Results
             identifier: Sonar_Scans
             description: ""
             type: Custom
@@ -104,7 +104,7 @@ pipeline:
               serviceDependencies: []
             tags: {}
         - stage:
-            name: Veracode Scans
+            name: ServiceNow DevOps Security Scan Results
             identifier: Veracode_Scans
             description: ""
             type: Custom
