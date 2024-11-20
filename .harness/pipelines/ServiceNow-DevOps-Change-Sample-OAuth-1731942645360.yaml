@@ -1,6 +1,6 @@
 pipeline:
   identifier: Build_pramaraju96_ServiceNow_DevOps_Change_Sample_OAuth_1731942662316
-  name: _ServiceNow-DevOps.Change.Sample.-_TEST
+  name: _ServiceNow-DevOps.Change.Sample.-_TEST.1
   orgIdentifier: _RR_HarnessCIOrganization1
   projectIdentifier: _RR_CIProject1
   properties:
