@@ -112,22 +112,40 @@ pipeline:
               execution:
                 steps:
                   - step:
-                      type: ShellScript
-                      name: Step_Veracode Scans
-                      identifier: ShellScript_1
+                      type: Container
+                      name: Step_Veracode scans
+                      identifier: Step_Veracode_scans
                       spec:
-                        shell: Bash
-                        executionTarget: {}
-                        source:
-                          type: Inline
+                        connectorRef: _RRDockerConnector
+                        image: servicenowdocker/sndevops:5.0.0
+                        command: sndevopscli create securityScan -p "{\"pipelineInfo\":{\"buildNumber\":\"${CI_PIPELINE_ID}\",\"pipelineExecutionUrl\":\"${CI_PIPELINE_URL}\" },\"securityResultAttributes\":{ \"scanner\":\"Veracode\",\"applicationName\":\"PetStoreAPI-Github\",\"buildVersion\":\"\",\"securityToolId\":\"\"}}"
+                        shell: Sh
+                        infrastructure:
+                          type: KubernetesDirect
                           spec:
-                            script: echo "In Veracode stage"
-                        environmentVariables: []
+                            connectorRef: _RRK8SClusterConnector
+                            namespace: harness-delegate-ng
+                            resources:
+                              limits:
+                                cpu: "0.5"
+                                memory: 500Mi
+                            annotations: {}
+                            labels: {}
+                            containerSecurityContext:
+                              capabilities:
+                                drop: []
+                                add: []
+                            nodeSelector: {}
+                        reports:
+                          type: JUnit
+                          spec:
+                            paths: []
                         outputVariables: []
-                      timeout: 10m
+                        envVariables: {}
+                      timeout: 5m
             tags: {}
         - stage:
-            name: Checkmarx SAST Scans
+            name: ServiceNow DevOps Security Scan Results
             identifier: Checkmarx_SAST_Scans
             description: ""
             type: Custom
@@ -135,22 +153,40 @@ pipeline:
               execution:
                 steps:
                   - step:
-                      type: ShellScript
-                      name: ShellScript_1
-                      identifier: ShellScript_1
+                      type: Container
+                      name: Step_Checkmarx One scans
+                      identifier: Step_Checkmarx_One_scans
                       spec:
-                        shell: Bash
-                        executionTarget: {}
-                        source:
-                          type: Inline
+                        connectorRef: _RRDockerConnector
+                        image: servicenowdocker/sndevops:5.0.0
+                        command: sndevopscli create securityScan -p "{\"pipelineInfo\":{\"buildNumber\":\"${CI_PIPELINE_ID}\",\"pipelineExecutionUrl\":\"${CI_PIPELINE_URL}\" },\"securityResultAttributes\":{ \"scanner\":\"Veracode\",\"applicationName\":\"PetStoreAPI-Github\",\"buildVersion\":\"\",\"securityToolId\":\"\"}}"
+                        shell: Sh
+                        infrastructure:
+                          type: KubernetesDirect
                           spec:
-                            script: echo "In CxSAST stage"
-                        environmentVariables: []
+                            connectorRef: _RRK8SClusterConnector
+                            namespace: harness-delegate-ng
+                            resources:
+                              limits:
+                                cpu: "0.5"
+                                memory: 500Mi
+                            annotations: {}
+                            labels: {}
+                            containerSecurityContext:
+                              capabilities:
+                                drop: []
+                                add: []
+                            nodeSelector: {}
+                        reports:
+                          type: JUnit
+                          spec:
+                            paths: []
                         outputVariables: []
-                      timeout: 10m
+                        envVariables: {}
+                      timeout: 5m
             tags: {}
         - stage:
-            name: Checkmarx One Scans
+            name: ServiceNow DevOps Security Scan Results
             identifier: Checkmarx_One_Scans
             description: ""
             type: Custom
@@ -158,19 +194,37 @@ pipeline:
               execution:
                 steps:
                   - step:
-                      type: ShellScript
-                      name: ShellScript_1
-                      identifier: ShellScript_1
+                      type: Container
+                      name: Step_Checkmarx SAST scan
+                      identifier: Step_Checkmarx_SAST_scan
                       spec:
-                        shell: Bash
-                        executionTarget: {}
-                        source:
-                          type: Inline
+                        connectorRef: _RRDockerConnector
+                        image: servicenowdocker/sndevops:5.0.0
+                        command: sndevopscli create securityScan -p "{\"pipelineInfo\":{\"buildNumber\":\"${CI_PIPELINE_ID}\",\"pipelineExecutionUrl\":\"${CI_PIPELINE_URL}\" },\"securityResultAttributes\":{ \"scanner\":\"Veracode\",\"applicationName\":\"PetStoreAPI-Github\",\"buildVersion\":\"\",\"securityToolId\":\"\"}}"
+                        shell: Sh
+                        infrastructure:
+                          type: KubernetesDirect
                           spec:
-                            script: echo "In CxOne stage"
-                        environmentVariables: []
+                            connectorRef: _RRK8SClusterConnector
+                            namespace: harness-delegate-ng
+                            resources:
+                              limits:
+                                cpu: "0.5"
+                                memory: 500Mi
+                            annotations: {}
+                            labels: {}
+                            containerSecurityContext:
+                              capabilities:
+                                drop: []
+                                add: []
+                            nodeSelector: {}
+                        reports:
+                          type: JUnit
+                          spec:
+                            paths: []
                         outputVariables: []
-                      timeout: 10m
+                        envVariables: {}
+                      timeout: 5m
             tags: {}
     - stage:
         name: Artifact
@@ -181,19 +235,37 @@ pipeline:
           execution:
             steps:
               - step:
-                  type: ShellScript
-                  name: ShellScript_1
-                  identifier: ShellScript_1
+                  type: Container
+                  name: Step_Artifact
+                  identifier: Step_Artifact
                   spec:
-                    shell: Bash
-                    executionTarget: {}
-                    source:
-                      type: Inline
+                    connectorRef: _RRDockerConnector
+                    image: servicenowdocker/sndevops:5.0.0
+                    command: sndevopscli create artifact -a '[{"name":"artifact-name-$CI_JOB_ID","repositoryName":"artifact-repo-name" ,"version":"1.3.0"}]'
+                    shell: Sh
+                    infrastructure:
+                      type: KubernetesDirect
                       spec:
-                        script: echo "In Artifact stage"
-                    environmentVariables: []
+                        connectorRef: _RRK8SClusterConnector
+                        namespace: harness-delegate-ng
+                        resources:
+                          limits:
+                            cpu: "0.5"
+                            memory: 500Mi
+                        annotations: {}
+                        labels: {}
+                        containerSecurityContext:
+                          capabilities:
+                            drop: []
+                            add: []
+                        nodeSelector: {}
+                    reports:
+                      type: JUnit
+                      spec:
+                        paths: []
                     outputVariables: []
-                  timeout: 10m
+                    envVariables: {}
+                  timeout: 5m
         tags: {}
     - stage:
         name: Package
@@ -204,19 +276,37 @@ pipeline:
           execution:
             steps:
               - step:
-                  type: ShellScript
-                  name: ShellScript_1
-                  identifier: ShellScript_1
+                  type: Container
+                  name: Step_Package
+                  identifier: Step_Package
                   spec:
-                    shell: Bash
-                    executionTarget: {}
-                    source:
-                      type: Inline
+                    connectorRef: _RRDockerConnector
+                    image: servicenowdocker/sndevops:5.0.0
+                    command: sndevopscli create package -n "package-name" -a '[{"name":"artifact-name-$CI_JOB_ID","repositoryName":"artifact-repo-name" ,"version":"1.3.0"}]
+                    shell: Sh
+                    infrastructure:
+                      type: KubernetesDirect
                       spec:
-                        script: echo "In Package stage"
-                    environmentVariables: []
+                        connectorRef: _RRK8SClusterConnector
+                        namespace: harness-delegate-ng
+                        resources:
+                          limits:
+                            cpu: "0.5"
+                            memory: 500Mi
+                        annotations: {}
+                        labels: {}
+                        containerSecurityContext:
+                          capabilities:
+                            drop: []
+                            add: []
+                        nodeSelector: {}
+                    reports:
+                      type: JUnit
+                      spec:
+                        paths: []
                     outputVariables: []
-                  timeout: 10m
+                    envVariables: {}
+                  timeout: 5m
         tags: {}
     - stage:
         name: ServiceNow DevOps Change
@@ -227,18 +317,36 @@ pipeline:
           execution:
             steps:
               - step:
-                  type: ShellScript
-                  name: ShellScript_1
-                  identifier: ShellScript_1
+                  type: Container
+                  name: Step_Change
+                  identifier: Step_Change
                   spec:
-                    shell: Bash
-                    executionTarget: {}
-                    source:
-                      type: Inline
+                    connectorRef: _RRDockerConnector
+                    image: servicenowdocker/sndevops:5.0.0
+                    command: sndevopscli create change -p '{"changeStepDetails":{"timeout":3600,"interval":100},"attributes":{"short_description":"Automated Software Deployment","description":"Automated Software Deployment.","assignment_group":"XXXXXXX","implementation_plan":"Software update is tested and results can be found in Test Summaries Tab.","backout_plan":"When software fails in production, the previous software release will be re-deployed.","test_plan":"Testing if the software was successfully deployed or not"}}'
+                    shell: Sh
+                    infrastructure:
+                      type: KubernetesDirect
                       spec:
-                        script: echo "In Change stage"
-                    environmentVariables: []
+                        connectorRef: _RRK8SClusterConnector
+                        namespace: harness-delegate-ng
+                        resources:
+                          limits:
+                            cpu: "0.5"
+                            memory: 500Mi
+                        annotations: {}
+                        labels: {}
+                        containerSecurityContext:
+                          capabilities:
+                            drop: []
+                            add: []
+                        nodeSelector: {}
+                    reports:
+                      type: JUnit
+                      spec:
+                        paths: []
                     outputVariables: []
-                  timeout: 10m
+                    envVariables: {}
+                  timeout: 5m
         tags: {}
   tags: {}
