@@ -1,6 +1,6 @@
 pipeline:
   identifier: Build_pramaraju96_ServiceNow_DevOps_Change_Sample_OAuth_1731942662316
-  name: Build ServiceNow-DevOps-Change-Sample-OAuth
+  name: _ServiceNow-DevOps.Change.Sample.-_TEST
   orgIdentifier: _RR_HarnessCIOrganization1
   projectIdentifier: _RR_CIProject1
   properties:
@@ -73,14 +73,14 @@ pipeline:
                       name: Step_Sonar Scans
                       identifier: Step_Sonar_Scans
                       spec:
-                        connectorRef: account.harnessImage
+                        connectorRef: _RRDockerConnector
                         image: servicenowdocker/sndevops:5.0.0
                         command: "sndevopscli create sonar -url 'https://sonarcloud.io' -projectKey 'awasthi1210_servicenow-devops-change'  "
                         shell: Sh
                         infrastructure:
                           type: KubernetesDirect
                           spec:
-                            connectorRef: account.harness_kube_connector_arnab
+                            connectorRef: _RRK8SClusterConnector
                             namespace: harness-delegate-ng
                             resources:
                               limits:
@@ -241,3 +241,4 @@ pipeline:
                     outputVariables: []
                   timeout: 10m
         tags: {}
+  tags: {}
